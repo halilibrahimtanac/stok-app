@@ -56,31 +56,33 @@ const FooterButtons = ({
     setPaletArr(newPaletArr);
   };
   return (
-    <div className="w-full h-auto bg-white flex gap-1 rounded-md p-2 justify-between items-center">
+    <div className="w-full h-auto bg-white flex gap-1 rounded-md p-2 justify-start items-center">
       <div className="flex items-center gap-3">
         <label className="text-xs lg:text-sm">
           {checkedAmount} seri seçili
         </label>
         <button
-          className="w-20 bg-blue-400 text-white text-xs p-1 rounded-md lg:text-sm"
+          className="w-fit bg-blue-400 text-white text-xs p-1 rounded-md lg:text-sm lg:w-20"
           onClick={combineHandler}
         >
           Birleştir
         </button>
         <button
-          className="w-20 bg-red-400 text-white text-xs p-1 rounded-md lg:text-sm"
+          className="w-[35px] bg-red-400 text-white text-xs p-1 rounded-md lg:text-sm lg:w-20"
           onClick={removeSelectedOnes}
         >
           Sil
         </button>
       </div>
 
-      <label className="text-xs lg:text-sm">{kalanPaletAdet}</label>
+      <label className="text-xs lg:text-sm dark:text-black">
+        {kalanPaletAdet}
+      </label>
 
       <button
-        className={`w-20 ${
+        className={`w-fit ${
           isDarkMode ? "bg-white" : "bg-purple-400"
-        } text-white text-xs p-1 rounded-md lg:text-sm`}
+        } text-white text-xs p-1 rounded-md lg:text-sm lg:w-20`}
       >
         Kaydet
       </button>

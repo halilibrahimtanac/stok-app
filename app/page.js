@@ -148,7 +148,7 @@ export default function Home() {
 
   return (
     <main className="w-full h-[100vh] flex items-center justify-center">
-      <div className="w-[70%] h-[70vh] bg-slate-400 p-5 text-xs flex flex-col gap-4 lg:w-1/3">
+      <div className="w-[95%] h-[70vh] bg-slate-400 p-5 text-xs flex flex-col gap-4 lg:w-1/3">
         <StockInfo />
         <StockCreator createStock={createStock} />
         <StockTable
