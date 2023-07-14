@@ -7,14 +7,26 @@ import { useEffect, useState } from "react";
 
 const exceededPaletHelper = (kalan, paletAdet, paletArr) => {
   while (kalan > 0) {
-    paletArr.push({
-      paletId:
-        paletArr.length > 0
-          ? parseInt(paletArr[paletArr.length - 1].paletId) + 1
-          : 20230713001,
-      paletAmount: paletAdet < kalan ? paletAdet : kalan,
-      isChecked: false,
-    });
+    if (paletArr.some((p) => p.isEmpty === true)) {
+      let foundIndex = paletArr.findIndex((p) => p.isEmpty === true);
+      paletArr[foundIndex] = {
+        ...paletArr[foundIndex],
+        paletAmount: paletAdet < kalan ? paletAdet : kalan,
+        isChecked: false,
+        isEmpty: false,
+      };
+    } else {
+      paletArr.push({
+        paletId:
+          paletArr.length > 0
+            ? parseInt(paletArr[paletArr.length - 1].paletId) + 1
+            : 20230713001,
+        paletAmount: paletAdet < kalan ? paletAdet : kalan,
+        isChecked: false,
+        isEmpty: false,
+      });
+    }
+
     kalan = kalan - paletAdet;
   }
   return [paletArr, kalan];
@@ -22,14 +34,26 @@ const exceededPaletHelper = (kalan, paletAdet, paletArr) => {
 
 const notExceededPaletHelper = (kalan, adet, paletAdet, paletArr) => {
   for (let i = 0; i < adet; i++) {
-    paletArr.push({
-      paletId:
-        paletArr.length > 0
-          ? parseInt(paletArr[paletArr.length - 1].paletId) + 1
-          : 20230713001,
-      paletAmount: paletAdet,
-      isChecked: false,
-    });
+    if (paletArr.some((p) => p.isEmpty === true)) {
+      let foundIndex = paletArr.findIndex((p) => p.isEmpty === true);
+      paletArr[foundIndex] = {
+        ...paletArr[foundIndex],
+        paletAmount: paletAdet,
+        isChecked: false,
+        isEmpty: false,
+      };
+    } else {
+      paletArr.push({
+        paletId:
+          paletArr.length > 0
+            ? parseInt(paletArr[paletArr.length - 1].paletId) + 1
+            : 20230713001,
+        paletAmount: paletAdet,
+        isChecked: false,
+        isEmpty: false,
+      });
+    }
+
     kalan = kalan - paletAdet;
   }
   return [paletArr, kalan];
@@ -82,10 +106,17 @@ export default function Home() {
   };
 
   const removeSingle = (val) => {
-    let newPaletArr = [...paletArr].filter((p) => p.paletId !== val.paletId);
+    let newPaletArr = [...paletArr];
+    let foundPaletIndex = newPaletArr.findIndex(
+      (p) => p.paletId === val.paletId
+    );
+    newPaletArr[foundPaletIndex] = {
+      paletId: newPaletArr[foundPaletIndex].paletId,
+      isEmpty: true,
+    };
     setPaletArr(newPaletArr);
     setKalanPaletAdet(
-      2100 - newPaletArr.reduce((p, c) => p + c.paletAmount, 0)
+      2100 - newPaletArr.reduce((p, c) => p + (c.paletAmount || 0), 0)
     );
   };
 
@@ -93,9 +124,31 @@ export default function Home() {
     console.log("kalan: ", kalanPaletAdet);
     console.log(paletArr);
   }, [kalanPaletAdet]);
+
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const darkModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+
+    console.log(darkModeMediaQuery);
+
+    const handleDarkModeChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    darkModeMediaQuery.addEventListener("change", handleDarkModeChange);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      darkModeMediaQuery.removeEventListener("change", handleDarkModeChange);
+    };
+  }, []);
+
   return (
     <main className="w-full h-[100vh] flex items-center justify-center">
-      <div className="w-1/3 h-[70vh] bg-slate-400 p-5 flex flex-col gap-4">
+      <div className="w-[70%] h-[70vh] bg-slate-400 p-5 text-xs flex flex-col gap-4 lg:w-1/3">
         <StockInfo />
         <StockCreator createStock={createStock} />
         <StockTable
@@ -110,6 +163,7 @@ export default function Home() {
           setPaletArr={setPaletArr}
           kalanPaletAdet={kalanPaletAdet}
           setKalanPaletAdet={setKalanPaletAdet}
+          isDarkMode={isDarkMode}
         />
       </div>
     </main>

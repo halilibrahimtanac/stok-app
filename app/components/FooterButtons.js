@@ -7,6 +7,7 @@ const FooterButtons = ({
   setPaletArr,
   kalanPaletAdet,
   setKalanPaletAdet,
+  isDarkMode,
 }) => {
   const removeSelectedOnes = () => {
     const removedAmount = [...paletArr].reduce((prev, curr) => {
@@ -15,8 +16,13 @@ const FooterButtons = ({
       }
       return prev;
     }, 0);
-    const filteredPalets = [...paletArr].filter((p) => p.isChecked !== true);
-    setPaletArr(filteredPalets);
+    let newPaletArr = [...paletArr];
+    newPaletArr.forEach((p, i) => {
+      if (p.isChecked) {
+        newPaletArr[i] = { paletId: p.paletId, isEmpty: true };
+      }
+    });
+    setPaletArr(newPaletArr);
     setKalanPaletAdet(kalanPaletAdet + removedAmount);
   };
 
@@ -32,35 +38,50 @@ const FooterButtons = ({
     }, 0);
     let firstChecked = newPaletArr.findIndex((p) => p.isChecked === true);
     newPaletArr[firstChecked].paletAmount = combinedAmount;
-    newPaletArr = newPaletArr.filter(
+    /* newPaletArr = newPaletArr.filter(
       (p) =>
         p.isChecked !== true ||
         (p.paletId === newPaletArr[firstChecked].paletId &&
           p.isChecked === true)
-    );
+    ); */
+    newPaletArr = newPaletArr.map((p) => {
+      if (
+        p.paletId !== newPaletArr[firstChecked].paletId &&
+        p.isChecked === true
+      ) {
+        return { paletId: p.paletId, isEmpty: true };
+      }
+      return p;
+    });
     setPaletArr(newPaletArr);
   };
   return (
-    <div className="w-full h-auto bg-white flex gap-1 rounded-md p-2 justify-between">
+    <div className="w-full h-auto bg-white flex gap-1 rounded-md p-2 justify-between items-center">
       <div className="flex items-center gap-3">
-        <label className="text-sm">{checkedAmount} seri seçili</label>
+        <label className="text-xs lg:text-sm">
+          {checkedAmount} seri seçili
+        </label>
         <button
-          className="w-20 bg-blue-400 text-white text-sm p-1 rounded-md"
+          className="w-20 bg-blue-400 text-white text-xs p-1 rounded-md lg:text-sm"
           onClick={combineHandler}
         >
           Birleştir
         </button>
         <button
-          className="w-20 bg-red-400 text-white text-sm p-1 rounded-md"
+          className="w-20 bg-red-400 text-white text-xs p-1 rounded-md lg:text-sm"
           onClick={removeSelectedOnes}
         >
           Sil
         </button>
       </div>
 
-      <label>{kalanPaletAdet}</label>
+      <label className="text-xs lg:text-sm">{kalanPaletAdet}</label>
 
-      <button className="w-20 bg-purple-400 text-white text-sm p-1 rounded-md">
+      <button
+        className={`w-20 ${
+          isDarkMode ? "bg-white" : "bg-purple-400"
+        } text-white text-xs p-1 rounded-md lg:text-sm`}
+      >
         Kaydet
       </button>
     </div>

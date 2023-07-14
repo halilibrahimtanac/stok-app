@@ -19,34 +19,34 @@ const StockCreator = ({ createStock }) => {
   return (
     <form
       onSubmit={submitHandler}
-      className="w-full h-auto bg-white flex gap-1 rounded-md p-2"
+      className="w-full h-auto bg-white flex gap-[4px] rounded-md p-2 lg:gap-1"
     >
-      <div className="flex items-center">
-        <label className="text-sm">Palet Sayısı:</label>
+      <div className="w-fit flex items-center">
+        <label className="text-[10px]">Palet Sayısı:</label>
         <input
           type="number"
           name="palet"
           min={0}
-          className="w-1/3 h-6 rounded-md p-2 border-[1px] border-slate-300 text-sm"
+          className="w-[40%] h-6 rounded-md p-2 border-[1px] border-slate-300 text-xs lg:w-1/3"
           onChange={onChangeHandler}
         />
       </div>
 
-      <div className="flex items-center">
-        <label className="text-sm">1 Palet kaç adet:</label>
+      <div className="w-fit flex items-center">
+        <label className="text-[10px]">1 Palet kaç adet:</label>
         <input
           type="number"
           name="paletAdet"
           min={0}
-          className="w-1/3 h-6 rounded-md p-2 border-[1px] border-slate-300 text-sm"
+          className="w-[45%] h-6 rounded-md p-2 border-[1px] border-slate-300 text-xs lg:w-1/3"
           onChange={onChangeHandler}
         />
       </div>
 
-      <div className="flex items-center">
+      <div className="w-fit flex items-center">
         <button
           type="submit"
-          className="bg-blue-400 text-white text-sm p-1 rounded-md"
+          className="bg-blue-400 text-white text-[10px] p-1 rounded-md"
         >
           Oluştur
         </button>

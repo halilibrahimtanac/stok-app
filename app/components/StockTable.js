@@ -26,27 +26,29 @@ const StockTable = ({
         </thead>
 
         <tbody>
-          {paletArr.map((p, i) => (
-            <tr key={p.paletId}>
-              <td className="border-2 p-2">
-                <input
-                  type="checkbox"
-                  checked={p.isChecked}
-                  onChange={() => isCheckedHandler(i)}
-                />
-              </td>
-              <td className="border-2 p-2">{p.paletId}</td>
-              <td className="border-2 p-2">{p.paletAmount}</td>
-              <td className="border-2 p-2">
-                <button
-                  className="w-20 bg-red-400 text-white text-sm p-1 rounded-md"
-                  onClick={() => removeSingle(p)}
-                >
-                  Sil
-                </button>
-              </td>
-            </tr>
-          ))}
+          {paletArr.map((p, i) =>
+            p.isEmpty ? null : (
+              <tr key={p.paletId}>
+                <td className="border-2 p-2">
+                  <input
+                    type="checkbox"
+                    checked={p.isChecked}
+                    onChange={() => isCheckedHandler(i)}
+                  />
+                </td>
+                <td className="border-2 p-2">{p.paletId}</td>
+                <td className="border-2 p-2">{p.paletAmount}</td>
+                <td className="border-2 p-2">
+                  <button
+                    className="w-20 bg-red-400 text-white text-sm p-1 rounded-md"
+                    onClick={() => removeSingle(p)}
+                  >
+                    Sil
+                  </button>
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
     </div>
