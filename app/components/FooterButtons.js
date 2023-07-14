@@ -32,7 +32,7 @@ const FooterButtons = ({
     let newPaletArr = [...paletArr];
     const combinedAmount = newPaletArr.reduce((prev, curr) => {
       if (curr.isChecked) {
-        return prev + curr.paletAmount;
+        return prev + (curr.paletAmount ? curr.paletAmount : 0);
       }
       return prev;
     }, 0);
