@@ -27,7 +27,7 @@ const StockCreator = ({ createStock }) => {
           type="number"
           name="palet"
           min={0}
-          className="w-[40%] h-6 rounded-md p-2 border-[1px] border-slate-300 text-xs lg:w-1/3"
+          className="w-[40%] h-6 rounded-md p-2 border-[1px] border-slate-300 text-xs lg:w-1/3 dark:text-black"
           onChange={onChangeHandler}
         />
       </div>
@@ -38,7 +38,7 @@ const StockCreator = ({ createStock }) => {
           type="number"
           name="paletAdet"
           min={0}
-          className="w-[45%] h-6 rounded-md p-2 border-[1px] border-slate-300 text-xs lg:w-1/3"
+          className="w-[45%] h-6 rounded-md p-2 border-[1px] border-slate-300 text-xs lg:w-1/3 dark:text-black"
           onChange={onChangeHandler}
         />
       </div>
