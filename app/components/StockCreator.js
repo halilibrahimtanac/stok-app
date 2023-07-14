@@ -22,7 +22,7 @@ const StockCreator = ({ createStock }) => {
       className="w-full h-auto bg-white flex gap-[4px] rounded-md p-2 lg:gap-1"
     >
       <div className="w-fit flex items-center">
-        <label className="text-[10px]">Palet Sayısı:</label>
+        <label className="text-[10px] dark:text-black">Palet Sayısı:</label>
         <input
           type="number"
           name="palet"
@@ -33,7 +33,7 @@ const StockCreator = ({ createStock }) => {
       </div>
 
       <div className="w-fit flex items-center">
-        <label className="text-[10px]">1 Palet kaç adet:</label>
+        <label className="text-[10px] dark:text-black">1 Palet kaç adet:</label>
         <input
           type="number"
           name="paletAdet"

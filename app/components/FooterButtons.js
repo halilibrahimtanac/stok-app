@@ -58,7 +58,7 @@ const FooterButtons = ({
   return (
     <div className="w-full h-auto bg-white flex gap-1 rounded-md p-2 justify-start items-center">
       <div className="flex items-center gap-3">
-        <label className="text-xs lg:text-sm">
+        <label className="text-xs lg:text-sm dark:text-black">
           {checkedAmount} seri seçili
         </label>
         <button

@@ -19,9 +19,11 @@ const StockTable = ({
                 onChange={() => selectAll(checkedState, setCheckedState)}
               />
             </td>
-            <th className="border-2 p-2 text-left">Seri Numarası</th>
-            <th className="border-2">Miktar</th>
-            <th className="border-2">İşlemler</th>
+            <th className="border-2 p-2 text-left dark:text-black">
+              Seri Numarası
+            </th>
+            <th className="border-2 dark:text-black">Miktar</th>
+            <th className="border-2 dark:text-black">İşlemler</th>
           </tr>
         </thead>
 
@@ -36,9 +38,11 @@ const StockTable = ({
                     onChange={() => isCheckedHandler(i)}
                   />
                 </td>
-                <td className="border-2 p-2">{p.paletId}</td>
-                <td className="border-2 p-2">{p.paletAmount}</td>
-                <td className="border-2 p-2">
+                <td className="border-2 p-2 dark:text-black">{p.paletId}</td>
+                <td className="border-2 p-2 dark:text-black">
+                  {p.paletAmount}
+                </td>
+                <td className="border-2 p-2 dark:text-black">
                   <button
                     className="w-20 bg-red-400 text-white text-sm p-1 rounded-md"
                     onClick={() => removeSingle(p)}
