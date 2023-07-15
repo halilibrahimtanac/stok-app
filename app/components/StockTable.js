@@ -15,7 +15,14 @@ const StockTable = ({
             <td className="border-2 p-2">
               <input
                 type="checkbox"
-                checked={checkedState}
+                checked={
+                  paletArr.length > 0 &&
+                  paletArr.every((p) => p.isChecked === true)
+                    ? true
+                    : !paletArr.every((p) => p.isChecked === true)
+                    ? false
+                    : checkedState
+                }
                 onChange={() => selectAll(checkedState, setCheckedState)}
               />
             </td>

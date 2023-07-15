@@ -5,16 +5,54 @@ import StockTable from "./components/StockTable";
 import FooterButtons from "./components/FooterButtons";
 import { useEffect, useState } from "react";
 
+const insertBetweenHelper = (paletArr, newPalet) => {
+  for (let i = 0; i < paletArr.length; i++) {
+    if (i < paletArr.length - 1) {
+      let currentNum = paletArr[i];
+      let nextNum = paletArr[i + 1];
+
+      if (paletArr[0].paletId !== 20230713001) {
+        paletArr.unshift({ ...newPalet, paletId: 20230713001 });
+        break;
+      }
+
+      if (nextNum.paletId - currentNum.paletId > 1) {
+        paletArr.splice(i + 1, 0, {
+          ...newPalet,
+          paletId: currentNum.paletId + 1,
+        });
+        break;
+      }
+    } else {
+      if (paletArr[0].paletId !== 20230713001) {
+        paletArr.unshift({ ...newPalet, paletId: 20230713001 });
+        break;
+      } else {
+        paletArr.push({
+          ...newPalet,
+          paletId: paletArr[paletArr.length - 1].paletId + 1,
+        });
+        break;
+      }
+    }
+  }
+
+  return paletArr;
+};
+
 const exceededPaletHelper = (kalan, paletAdet, paletArr) => {
+  let id = 20230713000;
   while (kalan > 0) {
-    if (paletArr.some((p) => p.isEmpty === true)) {
-      let foundIndex = paletArr.findIndex((p) => p.isEmpty === true);
-      paletArr[foundIndex] = {
-        ...paletArr[foundIndex],
+    if (
+      paletArr
+        .map((p, i) => (id + i + 1 !== p.paletId ? true : false))
+        .includes(true)
+    ) {
+      paletArr = insertBetweenHelper(paletArr, {
         paletAmount: paletAdet < kalan ? paletAdet : kalan,
         isChecked: false,
         isEmpty: false,
-      };
+      });
     } else {
       paletArr.push({
         paletId:
@@ -26,22 +64,24 @@ const exceededPaletHelper = (kalan, paletAdet, paletArr) => {
         isEmpty: false,
       });
     }
-
     kalan = kalan - paletAdet;
   }
   return [paletArr, kalan];
 };
 
 const notExceededPaletHelper = (kalan, adet, paletAdet, paletArr) => {
+  let id = 20230713000;
   for (let i = 0; i < adet; i++) {
-    if (paletArr.some((p) => p.isEmpty === true)) {
-      let foundIndex = paletArr.findIndex((p) => p.isEmpty === true);
-      paletArr[foundIndex] = {
-        ...paletArr[foundIndex],
+    if (
+      paletArr
+        .map((p, idx) => (id + idx + 1 !== p.paletId ? true : false))
+        .includes(true)
+    ) {
+      paletArr = insertBetweenHelper(paletArr, {
         paletAmount: paletAdet,
         isChecked: false,
         isEmpty: false,
-      };
+      });
     } else {
       paletArr.push({
         paletId:
@@ -106,14 +146,14 @@ export default function Home() {
   };
 
   const removeSingle = (val) => {
-    let newPaletArr = [...paletArr];
-    let foundPaletIndex = newPaletArr.findIndex(
+    let newPaletArr = [...paletArr].filter((p) => p.paletId !== val.paletId);
+    /* let foundPaletIndex = newPaletArr.findIndex(
       (p) => p.paletId === val.paletId
     );
     newPaletArr[foundPaletIndex] = {
       paletId: newPaletArr[foundPaletIndex].paletId,
       isEmpty: true,
-    };
+    }; */
     setPaletArr(newPaletArr);
     setKalanPaletAdet(
       2100 - newPaletArr.reduce((p, c) => p + (c.paletAmount || 0), 0)

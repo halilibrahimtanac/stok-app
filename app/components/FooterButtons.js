@@ -1,6 +1,16 @@
 "use client";
 import React from "react";
 
+const sortIds = (paletArr) => {
+  const firstId = 20230713000;
+  let i = 0;
+  paletArr = paletArr.map((p) => {
+    i = i + 1;
+    return { ...p, paletId: firstId + i };
+  });
+  return paletArr;
+};
+
 const FooterButtons = ({
   checkedAmount,
   paletArr,
@@ -12,16 +22,16 @@ const FooterButtons = ({
   const removeSelectedOnes = () => {
     const removedAmount = [...paletArr].reduce((prev, curr) => {
       if (curr.isChecked) {
-        return prev + curr.paletAmount;
+        return prev + (curr.paletAmount || 0);
       }
       return prev;
     }, 0);
-    let newPaletArr = [...paletArr];
-    newPaletArr.forEach((p, i) => {
+    let newPaletArr = [...paletArr].filter((p) => p.isChecked !== true);
+    /* newPaletArr.forEach((p, i) => {
       if (p.isChecked) {
         newPaletArr[i] = { paletId: p.paletId, isEmpty: true };
       }
-    });
+    }); */
     setPaletArr(newPaletArr);
     setKalanPaletAdet(kalanPaletAdet + removedAmount);
   };
@@ -38,22 +48,16 @@ const FooterButtons = ({
     }, 0);
     let firstChecked = newPaletArr.findIndex((p) => p.isChecked === true);
     newPaletArr[firstChecked].paletAmount = combinedAmount;
-    /* newPaletArr = newPaletArr.filter(
-      (p) =>
-        p.isChecked !== true ||
-        (p.paletId === newPaletArr[firstChecked].paletId &&
-          p.isChecked === true)
-    ); */
-    newPaletArr = newPaletArr.map((p) => {
+
+    newPaletArr = newPaletArr.filter((p) => {
       if (
-        p.paletId !== newPaletArr[firstChecked].paletId &&
-        p.isChecked === true
+        p.paletId === newPaletArr[firstChecked].paletId ||
+        p.isChecked !== true
       ) {
-        return { paletId: p.paletId, isEmpty: true };
+        return p;
       }
-      return p;
     });
-    setPaletArr(newPaletArr);
+    setPaletArr(sortIds(newPaletArr));
   };
   return (
     <div className="w-full h-auto bg-white flex gap-1 rounded-md p-2 justify-start items-center">
@@ -83,6 +87,7 @@ const FooterButtons = ({
         className={`w-fit ${
           isDarkMode ? "bg-white" : "bg-purple-400"
         } text-white text-xs p-1 rounded-md lg:text-sm lg:w-20`}
+        onClick={() => console.log(paletArr)}
       >
         Kaydet
       </button>
